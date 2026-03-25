@@ -30,7 +30,10 @@ export interface BroadcakeSiteConfig {
 		dark?: Partial<BroadcakeTheme>
 	}
 
-	/** Toggle pages on/off. All default to true. */
+	/** Toggle listing pages on/off. All default to true.
+	 *  Detail pages (/shows/[slug], /presenters/[slug], /events/[slug]) always work
+	 *  even when their listing page is disabled, so links from the schedule etc. aren't broken.
+	 */
 	pages?: {
 		schedule?: boolean
 		shows?: boolean
@@ -39,7 +42,21 @@ export interface BroadcakeSiteConfig {
 		events?: boolean
 	}
 
-	/** External links shown in the nav/footer (e.g. "Listen Live" URL) */
+	/** Navigation items shown in the nav bar (and mobile menu).
+	 *  Replaces the auto-generated page list + links. You control the exact items, order, and labels.
+	 *  Internal routes: { label: 'Schedule', href: '/schedule' }
+	 *  External links: { label: 'Listen Live', href: 'https://...', external: true }
+	 *  Custom pages: { label: 'About', href: '/about' }
+	 *
+	 *  If omitted, auto-generates nav from enabled pages (backwards compatible).
+	 */
+	navigation?: Array<{
+		label: string
+		href: string
+		external?: boolean
+	}>
+
+	/** @deprecated Use `navigation` instead. Kept for backwards compatibility. */
 	links?: Array<{
 		label: string
 		href: string

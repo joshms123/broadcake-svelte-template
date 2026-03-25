@@ -10,29 +10,40 @@
 	import Linkedin from '@lucide/svelte/icons/linkedin'
 	import { SiInstagram, SiFacebook, SiX, SiMastodon, SiTiktok, SiYoutube, SiBluesky, SiThreads, SiDiscord } from '@icons-pack/svelte-simple-icons'
 
+	type NavItem = { label: string; href: string; external?: boolean }
+
 	let {
 		siteName,
 		logo,
-		enabledPages,
+		navigation = null,
+		enabledPages = {},
 		links = [],
 		socialLinks = [],
 	}: {
 		siteName: string
 		logo?: string
-		enabledPages: Record<string, boolean>
-		links: Array<{ label: string; href: string; external?: boolean }>
-		socialLinks: StationSocialLink[]
+		navigation?: NavItem[] | null
+		enabledPages?: Record<string, boolean>
+		links?: NavItem[]
+		socialLinks?: StationSocialLink[]
 	} = $props()
 
 	let mobileOpen = $state(false)
 
-	const navItems = $derived.by(() => {
-		const items: { label: string; href: string }[] = []
-		if (enabledPages.schedule) items.push({ label: 'Schedule', href: '/schedule' })
-		if (enabledPages.shows) items.push({ label: 'Shows', href: '/shows' })
-		if (enabledPages.presenters) items.push({ label: 'Presenters', href: '/presenters' })
-		if (enabledPages.archives) items.push({ label: 'Archives', href: '/archives' })
-		if (enabledPages.events) items.push({ label: 'Events', href: '/events' })
+	// If `navigation` is provided, use it directly. Otherwise auto-generate from enabled pages + links.
+	const navItems: NavItem[] = $derived.by(() => {
+		if (navigation) return navigation
+
+		const items: NavItem[] = []
+		if (enabledPages.schedule !== false) items.push({ label: 'Schedule', href: '/schedule' })
+		if (enabledPages.shows !== false) items.push({ label: 'Shows', href: '/shows' })
+		if (enabledPages.presenters !== false) items.push({ label: 'Presenters', href: '/presenters' })
+		if (enabledPages.archives !== false) items.push({ label: 'Archives', href: '/archives' })
+		if (enabledPages.events !== false) items.push({ label: 'Events', href: '/events' })
+		// Append legacy links
+		for (const link of links) {
+			items.push(link)
+		}
 		return items
 	})
 
@@ -72,6 +83,7 @@
 	}
 
 	function isActive(href: string): boolean {
+		if (href === '/') return page.url.pathname === '/'
 		return page.url.pathname === href || page.url.pathname.startsWith(href + '/')
 	}
 
@@ -97,20 +109,26 @@
 					<li>
 						<a
 							href={item.href}
-							class="rounded-md px-3 py-2 text-sm font-medium transition-colors {isActive(item.href) ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'}"
-							aria-current={isActive(item.href) ? 'page' : undefined}
+							target={item.external ? '_blank' : undefined}
+							rel={item.external ? 'noopener noreferrer' : undefined}
+							class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors {!item.external && isActive(item.href) ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'}"
+							aria-current={!item.external && isActive(item.href) ? 'page' : undefined}
+							aria-label={item.external ? `${item.label} (opens in new tab)` : undefined}
 						>
 							{item.label}
+							{#if item.external}
+								<ExternalLink class="h-3.5 w-3.5" aria-hidden="true" />
+							{/if}
 						</a>
 					</li>
 				{/each}
 			</ul>
 		</nav>
 
-		<!-- Social icons + External links + theme toggle -->
+		<!-- Social icons + theme toggle -->
 		<div class="ml-auto flex items-center gap-2">
 			{#if socialLinks.length > 0}
-				<div class="hidden items-center gap-1 sm:flex">
+				<div class="hidden items-center gap-1 md:flex">
 					{#each socialLinks as social (social.url)}
 						{@const Icon = getPlatformIcon(social.platform)}
 						<a
@@ -124,24 +142,7 @@
 						</a>
 					{/each}
 				</div>
-				{#if links.length > 0}
-					<span class="hidden h-4 w-px bg-border sm:block" aria-hidden="true"></span>
-				{/if}
 			{/if}
-			{#each links as link (link.href)}
-				<a
-					href={link.href}
-					target={link.external ? '_blank' : undefined}
-					rel={link.external ? 'noopener noreferrer' : undefined}
-					class="hidden items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
-					aria-label={link.external ? `${link.label} (opens in new tab)` : undefined}
-				>
-					{link.label}
-					{#if link.external}
-						<ExternalLink class="h-3.5 w-3.5" aria-hidden="true" />
-					{/if}
-				</a>
-			{/each}
 			<ThemeToggle />
 
 			<!-- Mobile menu button -->
@@ -169,25 +170,15 @@
 					<li>
 						<a
 							href={item.href}
-							class="block rounded-md px-3 py-2 text-sm font-medium transition-colors {isActive(item.href) ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'}"
-							aria-current={isActive(item.href) ? 'page' : undefined}
+							target={item.external ? '_blank' : undefined}
+							rel={item.external ? 'noopener noreferrer' : undefined}
+							class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors {!item.external && isActive(item.href) ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'}"
+							aria-current={!item.external && isActive(item.href) ? 'page' : undefined}
+							aria-label={item.external ? `${item.label} (opens in new tab)` : undefined}
 							onclick={closeMobile}
 						>
 							{item.label}
-						</a>
-					</li>
-				{/each}
-				{#each links as link (link.href)}
-					<li>
-						<a
-							href={link.href}
-							target={link.external ? '_blank' : undefined}
-							rel={link.external ? 'noopener noreferrer' : undefined}
-							class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50"
-							onclick={closeMobile}
-						>
-							{link.label}
-							{#if link.external}
+							{#if item.external}
 								<ExternalLink class="h-3.5 w-3.5" aria-hidden="true" />
 							{/if}
 						</a>

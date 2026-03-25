@@ -5,6 +5,7 @@
 	import ArchiveList from '$lib/components/ArchiveList.svelte'
 	import SlotTime from '$lib/components/SlotTime.svelte'
 	import { buildPageTitle } from '$lib/utils/seo'
+	import { isPageEnabled } from '$lib/config'
 	import { page } from '$app/state'
 	import Clock from '@lucide/svelte/icons/clock'
 	import { renderMarkdown } from '$lib/utils/markdown'
@@ -19,9 +20,15 @@
 
 <PageMeta {title} description={data.show.description ?? `${data.show.name} on ${data.config.siteName}`} />
 
-<a href="/shows" class="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground transition-colors">
-	&larr; All Shows
-</a>
+{#if isPageEnabled('shows')}
+	<a href="/shows" class="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground transition-colors">
+		&larr; All Shows
+	</a>
+{:else}
+	<a href="/" class="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground transition-colors">
+		&larr; Home
+	</a>
+{/if}
 
 <h2 class="text-3xl font-bold">{data.show.name}</h2>
 

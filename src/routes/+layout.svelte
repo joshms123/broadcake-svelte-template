@@ -46,6 +46,7 @@
 <Nav
 	siteName={data.config.siteName}
 	logo={data.config.logo}
+	navigation={data.config.navigation}
 	enabledPages={data.enabledPages}
 	links={data.config.links}
 	socialLinks={data.station.social_links ?? []}

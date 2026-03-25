@@ -2,6 +2,7 @@
 	import PageMeta from '$lib/components/PageMeta.svelte'
 	import ShowCard from '$lib/components/ShowCard.svelte'
 	import { buildPageTitle } from '$lib/utils/seo'
+	import { isPageEnabled } from '$lib/config'
 	import { renderMarkdown } from '$lib/utils/markdown'
 
 	let { data } = $props()
@@ -10,9 +11,15 @@
 
 <PageMeta {title} description={data.presenter.bio ?? `${data.presenter.display_name} on ${data.config.siteName}`} />
 
-<a href="/presenters" class="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground transition-colors">
-	&larr; All Presenters
-</a>
+{#if isPageEnabled('presenters')}
+	<a href="/presenters" class="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground transition-colors">
+		&larr; All Presenters
+	</a>
+{:else}
+	<a href="/" class="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground transition-colors">
+		&larr; Home
+	</a>
+{/if}
 
 <div class="flex items-center gap-4">
 	{#if data.presenter.avatar_url}

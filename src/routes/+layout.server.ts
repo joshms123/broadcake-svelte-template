@@ -18,6 +18,14 @@ export const load: LayoutServerLoad = async () => {
 		throw err
 	}
 
+	const enabledPages = {
+		schedule: isPageEnabled('schedule'),
+		shows: isPageEnabled('shows'),
+		presenters: isPageEnabled('presenters'),
+		archives: isPageEnabled('archives'),
+		events: isPageEnabled('events'),
+	}
+
 	return {
 		station,
 		nowPlaying,
@@ -27,16 +35,11 @@ export const load: LayoutServerLoad = async () => {
 			siteUrl: config.siteUrl,
 			logo: config.logo,
 			footerText: config.footerText,
+			navigation: (config.navigation ?? null) as Array<{ label: string; href: string; external?: boolean }> | null,
 			links: config.links ?? [],
 			nowPlayingInterval: config.nowPlayingInterval ?? 15_000,
 			baseUrl: config.baseUrl,
 		},
-		enabledPages: {
-			schedule: isPageEnabled('schedule'),
-			shows: isPageEnabled('shows'),
-			presenters: isPageEnabled('presenters'),
-			archives: isPageEnabled('archives'),
-			events: isPageEnabled('events'),
-		},
+		enabledPages,
 	}
 }

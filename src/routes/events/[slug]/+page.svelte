@@ -4,6 +4,7 @@
 	import { buildPageTitle } from '$lib/utils/seo'
 	import { formatDateRange } from '$lib/utils/format'
 	import Calendar from '@lucide/svelte/icons/calendar'
+	import { isPageEnabled } from '$lib/config'
 	import { renderMarkdown } from '$lib/utils/markdown'
 
 	let { data } = $props()
@@ -12,9 +13,15 @@
 
 <PageMeta {title} description={data.event.description ?? `${data.event.name} at ${data.config.siteName}`} />
 
-<a href="/events" class="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground transition-colors">
-	&larr; All Events
-</a>
+{#if isPageEnabled('events')}
+	<a href="/events" class="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground transition-colors">
+		&larr; All Events
+	</a>
+{:else}
+	<a href="/" class="mb-4 inline-block text-sm text-muted-foreground hover:text-foreground transition-colors">
+		&larr; Home
+	</a>
+{/if}
 
 {#if data.event.cover_url}
 	<img
