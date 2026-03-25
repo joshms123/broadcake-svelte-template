@@ -5,6 +5,13 @@
 	import PresenterList from './PresenterList.svelte'
 
 	let { show }: { show: Show } = $props()
+
+	const MAX_DESC = 120
+	const truncatedDesc = $derived(
+		show.description && show.description.length > MAX_DESC
+			? show.description.slice(0, MAX_DESC).trimEnd() + '…'
+			: show.description
+	)
 </script>
 
 <Card.Root>
@@ -14,8 +21,8 @@
 				{show.name}
 			</a>
 		</Card.Title>
-		{#if show.description}
-			<Card.Description class="line-clamp-2">{show.description}</Card.Description>
+		{#if truncatedDesc}
+			<Card.Description>{truncatedDesc}</Card.Description>
 		{/if}
 	</Card.Header>
 	<Card.Content>

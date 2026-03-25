@@ -12,6 +12,13 @@
 			.slice(0, 2)
 			.toUpperCase()
 	)
+
+	const MAX_BIO = 120
+	const truncatedBio = $derived(
+		presenter.bio && presenter.bio.length > MAX_BIO
+			? presenter.bio.slice(0, MAX_BIO).trimEnd() + '…'
+			: presenter.bio
+	)
 </script>
 
 <Card.Root>
@@ -43,10 +50,10 @@
 			</div>
 		</div>
 	</Card.Header>
-	{#if presenter.bio || presenter.shows.length > 0}
+	{#if truncatedBio || presenter.shows.length > 0}
 		<Card.Content>
-			{#if presenter.bio}
-				<p class="text-sm text-muted-foreground line-clamp-2">{presenter.bio}</p>
+			{#if truncatedBio}
+				<p class="text-sm text-muted-foreground">{truncatedBio}</p>
 			{/if}
 			{#if presenter.shows.length > 0}
 				<p class="mt-2 text-sm">
