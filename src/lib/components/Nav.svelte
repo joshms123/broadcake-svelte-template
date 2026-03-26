@@ -98,7 +98,7 @@
 		<!-- Social icons + theme toggle -->
 		<div class="ml-auto flex items-center gap-2 {branded ? 'text-current' : ''}">
 			<div class="hidden md:block">
-				<SocialIcons {socialLinks} />
+				<SocialIcons {socialLinks} {branded} />
 			</div>
 			<ThemeToggle />
 
@@ -143,7 +143,7 @@
 				{/each}
 				{#if socialLinks.length > 0}
 					<li class="px-3 py-2">
-						<SocialIcons {socialLinks} onclick={closeMobile} />
+						<SocialIcons {socialLinks} {branded} onclick={closeMobile} />
 					</li>
 				{/if}
 			</ul>

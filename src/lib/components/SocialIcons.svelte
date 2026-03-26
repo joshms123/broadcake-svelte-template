@@ -8,10 +8,12 @@
 	let {
 		socialLinks,
 		size = 'default',
+		branded = false,
 		onclick,
 	}: {
 		socialLinks: StationSocialLink[]
 		size?: 'default' | 'small'
+		branded?: boolean
 		onclick?: () => void
 	} = $props()
 
@@ -63,7 +65,7 @@
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="{getPlatformLabel(social.platform)} (opens in new tab)"
-				class="inline-flex {buttonSize} items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/50"
+				class="inline-flex {buttonSize} items-center justify-center rounded-md opacity-70 transition-colors hover:opacity-100 {branded ? 'hover:bg-white/10' : 'hover:bg-accent/50'}"
 				{onclick}
 			>
 				<Icon class={iconSize} aria-hidden="true" />
