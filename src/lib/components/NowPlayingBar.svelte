@@ -169,19 +169,21 @@
 		<div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-2 sm:px-6 lg:px-8">
 			<Radio class="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
 			<div class="min-w-0 flex-1 text-sm">
-				<span class="font-medium">
-					{#if now.show_slug}
-						<a href="/shows/{now.show_slug}" class="hover:text-primary transition-colors">{now.show_name}</a>
-					{:else}
-						{now.show_name}
-					{/if}
-				</span>
-				<span class="text-muted-foreground">
-					<span class="hidden sm:inline"> &middot; </span>
-					<span class="hidden sm:inline"><SlotTime start={now.slot_start} end={now.slot_end} /></span>
-				</span>
+				<div class="flex flex-col sm:flex-row sm:items-baseline">
+					<span class="truncate font-medium">
+						{#if now.show_slug}
+							<a href="/shows/{now.show_slug}" class="hover:text-primary transition-colors">{now.show_name}</a>
+						{:else}
+							{now.show_name}
+						{/if}
+					</span>
+					<span class="text-xs text-muted-foreground sm:text-sm">
+						<span class="hidden sm:inline"> &middot; </span>
+						<SlotTime start={now.slot_start} end={now.slot_end} />
+					</span>
+				</div>
 				{#if next}
-					<span class="ml-3 hidden text-muted-foreground md:inline">
+					<span class="hidden text-muted-foreground md:inline">
 						Up next: {next.show_name}
 					</span>
 				{/if}

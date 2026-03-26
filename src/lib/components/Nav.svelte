@@ -1,14 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/state'
 	import type { StationSocialLink } from '@techcake/broadcake-sdk'
-	import type { Component } from 'svelte'
 	import ThemeToggle from './ThemeToggle.svelte'
+	import SocialIcons from './SocialIcons.svelte'
 	import Menu from '@lucide/svelte/icons/menu'
 	import XIcon from '@lucide/svelte/icons/x'
 	import ExternalLink from '@lucide/svelte/icons/external-link'
-	import Globe from '@lucide/svelte/icons/globe'
-	import Linkedin from '@lucide/svelte/icons/linkedin'
-	import { SiInstagram, SiFacebook, SiX, SiMastodon, SiTiktok, SiYoutube, SiBluesky, SiThreads, SiDiscord } from '@icons-pack/svelte-simple-icons'
 
 	type NavItem = { label: string; href: string; external?: boolean }
 
@@ -46,41 +43,6 @@
 		}
 		return items
 	})
-
-	const PLATFORM_ICONS: Record<string, Component> = {
-		instagram: SiInstagram,
-		facebook: SiFacebook,
-		x: SiX,
-		mastodon: SiMastodon,
-		tiktok: SiTiktok,
-		youtube: SiYoutube,
-		bluesky: SiBluesky,
-		threads: SiThreads,
-		discord: SiDiscord,
-		linkedin: Linkedin,
-	}
-
-	function getPlatformIcon(platform: string): Component {
-		return PLATFORM_ICONS[platform] ?? Globe
-	}
-
-	const PLATFORM_LABELS: Record<string, string> = {
-		instagram: 'Instagram',
-		facebook: 'Facebook',
-		x: 'X',
-		mastodon: 'Mastodon',
-		tiktok: 'TikTok',
-		youtube: 'YouTube',
-		bluesky: 'Bluesky',
-		threads: 'Threads',
-		discord: 'Discord',
-		linkedin: 'LinkedIn',
-		website: 'Website',
-	}
-
-	function getPlatformLabel(platform: string): string {
-		return PLATFORM_LABELS[platform] ?? platform
-	}
 
 	function isActive(href: string): boolean {
 		if (href === '/') return page.url.pathname === '/'
@@ -127,22 +89,9 @@
 
 		<!-- Social icons + theme toggle -->
 		<div class="ml-auto flex items-center gap-2">
-			{#if socialLinks.length > 0}
-				<div class="hidden items-center gap-1 md:flex">
-					{#each socialLinks as social (social.url)}
-						{@const Icon = getPlatformIcon(social.platform)}
-						<a
-							href={social.url}
-							target="_blank"
-							rel="noopener noreferrer"
-							aria-label="{getPlatformLabel(social.platform)} (opens in new tab)"
-							class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/50"
-						>
-							<Icon class="h-4 w-4" aria-hidden="true" />
-						</a>
-					{/each}
-				</div>
-			{/if}
+			<div class="hidden md:block">
+				<SocialIcons {socialLinks} />
+			</div>
 			<ThemeToggle />
 
 			<!-- Mobile menu button -->
@@ -185,22 +134,8 @@
 					</li>
 				{/each}
 				{#if socialLinks.length > 0}
-					<li>
-						<div class="flex items-center gap-2 px-3 py-2">
-							{#each socialLinks as social (social.url)}
-								{@const Icon = getPlatformIcon(social.platform)}
-								<a
-									href={social.url}
-									target="_blank"
-									rel="noopener noreferrer"
-									aria-label="{getPlatformLabel(social.platform)} (opens in new tab)"
-									class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/50"
-									onclick={closeMobile}
-								>
-									<Icon class="h-4 w-4" aria-hidden="true" />
-								</a>
-							{/each}
-						</div>
+					<li class="px-3 py-2">
+						<SocialIcons {socialLinks} onclick={closeMobile} />
 					</li>
 				{/if}
 			</ul>

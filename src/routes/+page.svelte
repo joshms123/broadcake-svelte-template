@@ -47,4 +47,4 @@
      The NowPlayingBar in the layout already shows what's on air.
      To add it back: import NowPlayingBlock and add <NowPlayingBlock now={data.nowPlaying.now} /> -->
 
-<TodayScheduleBlock slots={data.todaySchedule.slots} />
+<TodayScheduleBlock slots={data.todaySchedule.slots} hasMore={data.hasMoreSlots} date={data.scheduleDate} />

@@ -64,4 +64,4 @@
 <main id="main-content" tabindex="-1" class="mx-auto min-h-[60vh] max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 	{@render children()}
 </main>
-<Footer siteName={data.config.siteName} footerText={data.config.footerText} />
+<Footer siteName={data.config.siteName} footerText={data.config.footerText} socialLinks={data.station.social_links ?? []} />

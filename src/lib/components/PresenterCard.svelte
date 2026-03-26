@@ -21,7 +21,7 @@
 	)
 </script>
 
-<Card.Root>
+<Card.Root class="flex h-full flex-col">
 	<Card.Header>
 		<div class="flex items-center gap-3">
 			{#if presenter.avatar_url}
@@ -51,12 +51,12 @@
 		</div>
 	</Card.Header>
 	{#if truncatedBio || presenter.shows.length > 0}
-		<Card.Content>
+		<Card.Content class="flex flex-1 flex-col">
 			{#if truncatedBio}
 				<p class="text-sm text-muted-foreground">{truncatedBio}</p>
 			{/if}
 			{#if presenter.shows.length > 0}
-				<p class="mt-2 text-sm">
+				<p class="mt-auto pt-2 text-sm">
 					<span class="text-muted-foreground">Shows:</span>
 					{#each presenter.shows as show, i (show.slug)}
 						{#if i > 0}, {/if}

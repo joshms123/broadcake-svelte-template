@@ -24,7 +24,7 @@
 		aria-hidden="true"
 	/>
 	{#if tagline}
-		<div class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-6 sm:p-8">
+		<div class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 dark:from-black/80 to-transparent p-6 sm:p-8">
 			<p class="text-lg font-medium text-white italic sm:text-xl">{tagline}</p>
 		</div>
 	{/if}
