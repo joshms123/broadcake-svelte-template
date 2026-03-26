@@ -29,6 +29,12 @@
 
 	let mobileOpen = $state(false)
 
+	const branded = $derived(!!headerClass)
+	function linkClass(active: boolean): string {
+		if (active) return branded ? 'bg-white/20 text-current' : 'bg-accent text-accent-foreground'
+		return branded ? 'text-current/80 hover:text-current hover:bg-white/10' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+	}
+
 	// If `navigation` is provided, use it directly. Otherwise auto-generate from enabled pages + links.
 	const navItems: NavItem[] = $derived.by(() => {
 		if (navigation) return navigation
@@ -59,7 +65,7 @@
 <header class="sticky top-0 z-40 border-b {headerClass || 'bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'}">
 	<div class="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
 		<!-- Logo / Site name -->
-		<a href="/" class="flex shrink-0 items-center gap-2 font-bold" aria-label="{siteName} - Home">
+		<a href="/" class="flex shrink-0 items-center gap-2 font-bold {branded ? 'text-current' : ''}" aria-label="{siteName} - Home">
 			{#if logo}
 				<img src={logo} alt="" class="h-8 w-auto" aria-hidden="true" />
 			{/if}
@@ -75,7 +81,7 @@
 							href={item.href}
 							target={item.external ? '_blank' : undefined}
 							rel={item.external ? 'noopener noreferrer' : undefined}
-							class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors {!item.external && isActive(item.href) ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'}"
+							class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors {linkClass(!item.external && isActive(item.href))}"
 							aria-current={!item.external && isActive(item.href) ? 'page' : undefined}
 							aria-label={item.external ? `${item.label} (opens in new tab)` : undefined}
 						>
@@ -90,7 +96,7 @@
 		</nav>
 
 		<!-- Social icons + theme toggle -->
-		<div class="ml-auto flex items-center gap-2">
+		<div class="ml-auto flex items-center gap-2 {branded ? 'text-current' : ''}">
 			<div class="hidden md:block">
 				<SocialIcons {socialLinks} />
 			</div>
@@ -98,7 +104,7 @@
 
 			<!-- Mobile menu button -->
 			<button
-				class="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent md:hidden"
+				class="inline-flex h-9 w-9 items-center justify-center rounded-md md:hidden {branded ? 'hover:bg-white/10' : 'hover:bg-accent'}"
 				onclick={() => (mobileOpen = !mobileOpen)}
 				aria-expanded={mobileOpen}
 				aria-controls="mobile-nav"
@@ -115,7 +121,7 @@
 
 	<!-- Mobile nav -->
 	{#if mobileOpen}
-		<nav id="mobile-nav" aria-label="Main navigation" class="border-t md:hidden">
+		<nav id="mobile-nav" aria-label="Main navigation" class="md:hidden {branded ? 'border-t border-white/20' : 'border-t'}">
 			<ul class="space-y-1 px-4 py-3">
 				{#each navItems as item (item.href)}
 					<li>
@@ -123,7 +129,7 @@
 							href={item.href}
 							target={item.external ? '_blank' : undefined}
 							rel={item.external ? 'noopener noreferrer' : undefined}
-							class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors {!item.external && isActive(item.href) ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'}"
+							class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors {linkClass(!item.external && isActive(item.href))}"
 							aria-current={!item.external && isActive(item.href) ? 'page' : undefined}
 							aria-label={item.external ? `${item.label} (opens in new tab)` : undefined}
 							onclick={closeMobile}
