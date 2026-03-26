@@ -28,6 +28,10 @@ export interface BroadcakeSiteConfig {
 	theme?: {
 		light?: Partial<BroadcakeTheme>
 		dark?: Partial<BroadcakeTheme>
+		/** Tailwind classes applied to the <header> element.
+		 *  Use to brand the header, e.g. "bg-primary text-primary-foreground"
+		 */
+		headerClass?: string
 	}
 
 	/** Toggle listing pages on/off. All default to true.

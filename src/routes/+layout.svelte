@@ -50,6 +50,7 @@
 	enabledPages={data.enabledPages}
 	links={data.config.links}
 	socialLinks={data.station.social_links ?? []}
+	headerClass={data.config.headerClass}
 />
 <NowPlayingBar
 	initialNow={data.nowPlaying.now}

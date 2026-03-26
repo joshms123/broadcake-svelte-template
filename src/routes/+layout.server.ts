@@ -39,6 +39,7 @@ export const load: LayoutServerLoad = async () => {
 			links: config.links ?? [],
 			nowPlayingInterval: config.nowPlayingInterval ?? 15_000,
 			baseUrl: config.baseUrl,
+			headerClass: config.theme?.headerClass ?? '',
 		},
 		enabledPages,
 	}

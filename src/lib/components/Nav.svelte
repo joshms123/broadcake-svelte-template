@@ -16,6 +16,7 @@
 		enabledPages = {},
 		links = [],
 		socialLinks = [],
+		headerClass = '',
 	}: {
 		siteName: string
 		logo?: string
@@ -23,6 +24,7 @@
 		enabledPages?: Record<string, boolean>
 		links?: NavItem[]
 		socialLinks?: StationSocialLink[]
+		headerClass?: string
 	} = $props()
 
 	let mobileOpen = $state(false)
@@ -54,7 +56,7 @@
 	}
 </script>
 
-<header class="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+<header class="sticky top-0 z-40 border-b {headerClass || 'bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'}">
 	<div class="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
 		<!-- Logo / Site name -->
 		<a href="/" class="flex shrink-0 items-center gap-2 font-bold" aria-label="{siteName} - Home">
