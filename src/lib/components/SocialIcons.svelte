@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { StationSocialLink } from '@techcake/broadcake-sdk'
-	import type { Component } from 'svelte'
+	import type { Component, ComponentType, SvelteComponent } from 'svelte'
 	import Globe from '@lucide/svelte/icons/globe'
 	import Linkedin from '@lucide/svelte/icons/linkedin'
 	import { SiInstagram, SiFacebook, SiX, SiMastodon, SiTiktok, SiYoutube, SiBluesky, SiThreads, SiDiscord } from '@icons-pack/svelte-simple-icons'
@@ -17,7 +17,11 @@
 		onclick?: () => void
 	} = $props()
 
-	const PLATFORM_ICONS: Record<string, Component> = {
+	// simple-icons ships legacy Svelte 4 class components; lucide ships Svelte 5
+	// function components. The map holds both.
+	type IconComponent = Component<any> | ComponentType<SvelteComponent<any>>
+
+	const PLATFORM_ICONS: Record<string, IconComponent> = {
 		instagram: SiInstagram,
 		facebook: SiFacebook,
 		x: SiX,
@@ -44,7 +48,7 @@
 		website: 'Website',
 	}
 
-	function getPlatformIcon(platform: string): Component {
+	function getPlatformIcon(platform: string): IconComponent {
 		return PLATFORM_ICONS[platform] ?? Globe
 	}
 

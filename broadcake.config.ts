@@ -94,7 +94,9 @@ export interface BroadcakeSiteConfig {
 
 const config: BroadcakeSiteConfig = {
 	stationSlug: 'cake-fm',
-	baseUrl: 'http://localhost:5173',
+	// Leave unset to use the SDK default (https://app.broadcake.com).
+	// Point this at your own deployment only if you self-host Broadcake.
+	// baseUrl: 'https://app.broadcake.com',
 	// siteName: 'My Radio Station',
 	// tagline: 'Your community station',
 	// siteUrl: 'https://mystation.com',

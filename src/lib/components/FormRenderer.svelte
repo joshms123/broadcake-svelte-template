@@ -227,7 +227,7 @@
 					<input
 						type={field.type === 'phone' ? 'tel' : field.type}
 						id={inputId}
-						value={formValues[field.id] ?? ''}
+						value={String(formValues[field.id] ?? '')}
 						oninput={(e) => formValues[field.id] = (e.target as HTMLInputElement).value}
 						placeholder={field.placeholder}
 						aria-required={field.required || undefined}
@@ -239,7 +239,7 @@
 					<input
 						type="number"
 						id={inputId}
-						value={formValues[field.id] ?? ''}
+						value={String(formValues[field.id] ?? '')}
 						oninput={(e) => {
 							const v = (e.target as HTMLInputElement).value
 							formValues[field.id] = v === '' ? '' : Number(v)
@@ -255,7 +255,7 @@
 				{:else if field.type === 'textarea'}
 					<textarea
 						id={inputId}
-						value={formValues[field.id] ?? ''}
+						value={String(formValues[field.id] ?? '')}
 						oninput={(e) => formValues[field.id] = (e.target as HTMLTextAreaElement).value}
 						placeholder={field.placeholder}
 						aria-required={field.required || undefined}
@@ -267,7 +267,7 @@
 				{:else if field.type === 'select' || field.type === 'genre' || field.type === 'show' || field.type === 'presenter'}
 					<select
 						id={inputId}
-						value={formValues[field.id] ?? ''}
+						value={String(formValues[field.id] ?? '')}
 						onchange={(e) => formValues[field.id] = (e.target as HTMLSelectElement).value}
 						aria-required={field.required || undefined}
 						aria-describedby={ariaDescribedBy(field)}
@@ -303,7 +303,7 @@
 					<input
 						type="date"
 						id={inputId}
-						value={formValues[field.id] ?? ''}
+						value={String(formValues[field.id] ?? '')}
 						oninput={(e) => formValues[field.id] = (e.target as HTMLInputElement).value}
 						aria-required={field.required || undefined}
 						aria-describedby={ariaDescribedBy(field)}
@@ -344,7 +344,7 @@
 					<input
 						type="time"
 						id={inputId}
-						value={formValues[field.id] ?? ''}
+						value={String(formValues[field.id] ?? '')}
 						oninput={(e) => formValues[field.id] = (e.target as HTMLInputElement).value}
 						aria-required={field.required || undefined}
 						aria-describedby={ariaDescribedBy(field)}
