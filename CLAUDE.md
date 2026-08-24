@@ -94,3 +94,16 @@ duplicate key, and it throws during hydration, so the server-rendered page
 arrives complete and the client wipes it — a live station's schedule page was a
 blank shell with a footer while `curl` showed the full listing. That asymmetry is
 the tell.
+
+## Linking a slot to its detail page
+
+An event slot's `show_slug` is the *event's* slug — the query builds it as
+`COALESCE(sh.slug, ae.slug)`, so a whole-event row and a custom-named segment
+both look like a show. Linking on `show_slug` alone therefore pointed at
+`/shows/<event>`, which does not exist, and every event on the schedule was a
+404 for as long as events have rendered.
+
+Compare the two slugs instead: they differ only when the segment really is a
+show. Same slug, or none, means the event itself, so link to `/events/<slug>`.
+Detail pages keep working when their listing page is switched off in
+`broadcake.config.ts` precisely so these links hold.

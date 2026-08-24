@@ -17,7 +17,19 @@
 
 	const isAutomation = $derived(slot.source === 'automation')
 	const isCancelled = $derived(slot.override_type === 'cancellation')
-	const showLink = $derived(slot.show_slug && !isAutomation ? `/shows/${slot.show_slug}` : null)
+	// An event slot carries the event's slug in show_slug — the query coalesces
+	// COALESCE(sh.slug, ae.slug) — so a whole-event row and a custom-named segment
+	// both look like a show and linked to /shows/<event>, which is a 404. Compare
+	// the two slugs: they differ only when the segment really is a show.
+	const detailLink = $derived(
+		isAutomation
+			? null
+			: slot.show_slug && slot.show_slug !== slot.event_slug
+				? `/shows/${slot.show_slug}`
+				: slot.event_slug
+					? `/events/${slot.event_slug}`
+					: null,
+	)
 </script>
 
 <article
@@ -40,8 +52,8 @@
 					</span>
 				{/if}
 				<h4 class="font-semibold leading-tight">
-					{#if showLink}
-						<a href={showLink} class="hover:text-primary transition-colors">{slot.show_name}</a>
+					{#if detailLink}
+						<a href={detailLink} class="hover:text-primary transition-colors">{slot.show_name}</a>
 					{:else}
 						<span class={isAutomation ? 'text-muted-foreground italic' : ''}>{slot.show_name}</span>
 					{/if}
