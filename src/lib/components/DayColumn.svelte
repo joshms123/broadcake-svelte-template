@@ -41,7 +41,7 @@
 		<p class="text-sm text-muted-foreground italic">No shows scheduled</p>
 	{:else}
 		<div class="space-y-2">
-			{#each filteredSlots as slot (slot.slot_start)}
+			{#each filteredSlots as slot, i (i)}
 				<ScheduleSlot {slot} compact />
 			{/each}
 		</div>

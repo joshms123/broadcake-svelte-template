@@ -84,13 +84,16 @@ public site.
 
 ## Keying slot lists
 
-Key a day's slots on `slot.slot_start`, never on the show or event slug. Slots
-within a day cannot overlap, so the start time is unique by construction; a slug
-is not. A show and its second-chance repeat share one, and so did the two halves
-of a multi-day event before they were merged upstream.
+Key a day's slots by position — `{#each slots as slot, i (i)}`. No field on a
+slot is unique, and each candidate fails differently: a slug is shared by a show
+and its second-chance repeat, and the start time collides whenever two slots
+begin together, which happens when a replacement override starts with an event,
+or when two multi-day events both clamp to the day's edge. Both were measured
+against the real query, not reasoned about. The dashboard's schedule page has
+always keyed by index for the same reason.
 
-The cost is not a cosmetic glitch. Svelte throws `each_key_duplicate` on a
-duplicate key, and it throws during hydration, so the server-rendered page
+The cost of getting it wrong is not a cosmetic glitch. Svelte throws
+`each_key_duplicate`, and it throws during hydration, so the server-rendered page
 arrives complete and the client wipes it — a live station's schedule page was a
 blank shell with a footer while `curl` showed the full listing. That asymmetry is
 the tell.

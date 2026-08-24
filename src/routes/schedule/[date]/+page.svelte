@@ -49,7 +49,7 @@
 	<p class="text-muted-foreground italic">No shows scheduled for this day.</p>
 {:else}
 	<div class="space-y-3">
-		{#each filteredSlots as slot}
+		{#each filteredSlots as slot, i (i)}
 			<ScheduleSlot {slot} />
 		{/each}
 	</div>
