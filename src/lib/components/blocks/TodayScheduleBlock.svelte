@@ -31,7 +31,7 @@
 		<p class="text-muted-foreground italic">No more shows scheduled for today.</p>
 	{:else}
 		<div class="space-y-3">
-			{#each slots as slot, i (slot.show_slug ?? `auto-${i}`)}
+			{#each slots as slot (slot.slot_start)}
 				<ScheduleSlotComponent {slot} />
 			{/each}
 		</div>

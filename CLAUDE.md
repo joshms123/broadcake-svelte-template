@@ -81,3 +81,16 @@ onerror=…>`) and could reassemble a `<script>` tag out of its own output.
 Show descriptions, presenter bios and event descriptions are written by station
 staff — including presenters, the lowest-privileged role — and rendered on the
 public site.
+
+## Keying slot lists
+
+Key a day's slots on `slot.slot_start`, never on the show or event slug. Slots
+within a day cannot overlap, so the start time is unique by construction; a slug
+is not. A show and its second-chance repeat share one, and so did the two halves
+of a multi-day event before they were merged upstream.
+
+The cost is not a cosmetic glitch. Svelte throws `each_key_duplicate` on a
+duplicate key, and it throws during hydration, so the server-rendered page
+arrives complete and the client wipes it — a live station's schedule page was a
+blank shell with a footer while `curl` showed the full listing. That asymmetry is
+the tell.
