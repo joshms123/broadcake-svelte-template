@@ -236,7 +236,7 @@
 							aria-label="Select stream quality"
 							class="hidden h-7 rounded border border-input bg-transparent px-2 text-xs md:block"
 						>
-							{#each streams as s, i (s.url)}
+							{#each streams as s, i (i)}
 								<option value={String(i)}>{streamLabel(s)}</option>
 							{/each}
 						</select>
@@ -285,7 +285,7 @@
 										aria-label="Select stream quality"
 										class="w-full h-7 rounded border border-input bg-transparent px-2 text-xs"
 									>
-										{#each streams as s, i (s.url)}
+										{#each streams as s, i (i)}
 											<option value={String(i)}>{streamLabel(s)}</option>
 										{/each}
 									</select>

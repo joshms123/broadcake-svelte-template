@@ -51,7 +51,7 @@
 			When to Listen
 		</h3>
 		<ul class="space-y-1 text-muted-foreground">
-			{#each regularSlots as slot (slot.day_name + slot.start_time)}
+			{#each regularSlots as slot, i (i)}
 				<li>
 					<span class="font-medium text-foreground">{slot.day_name}s</span>
 					<SlotTime start={slot.start_time} end={slot.end_time} />
@@ -64,7 +64,7 @@
 		{#if repeatSlots.length > 0}
 			<p class="mt-2 text-sm text-muted-foreground">
 				Also airs as a {repeatSlots[0].repeat_label ?? 'repeat'}:
-				{#each repeatSlots as slot, i (slot.day_name + slot.start_time)}
+				{#each repeatSlots as slot, i (i)}
 					{#if i > 0}, {/if}
 					{slot.day_name}s <SlotTime start={slot.start_time} end={slot.end_time} />
 				{/each}

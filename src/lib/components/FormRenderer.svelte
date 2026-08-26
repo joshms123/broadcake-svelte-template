@@ -53,6 +53,13 @@
 		return ids.length > 0 ? ids.join(' ') : undefined
 	}
 
+	// Keyed by position, not by value. A presenter field's options are display
+	// names, and `profiles` is unique on slug — two presenters called Dave are
+	// ordinary. Free-text options are saved with `filter(Boolean)` and no dedupe,
+	// so "Yes"/"Yes" is reachable too. Either one is a duplicate key, and Svelte
+	// throws each_key_duplicate during hydration, which is a 500 on a public
+	// form rather than a visual glitch — the same failure that took a station's
+	// schedule page down.
 	function getOptions(field: FormField): { value: string; label: string }[] {
 		switch (field.type) {
 			case 'genre':
@@ -275,7 +282,7 @@
 						class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 					>
 						<option value="">{field.placeholder ?? 'Select an option'}</option>
-						{#each getOptions(field) as option (option.value)}
+						{#each getOptions(field) as option, i (i)}
 							<option value={option.value}>{option.label}</option>
 						{/each}
 					</select>
@@ -283,7 +290,7 @@
 					<fieldset aria-describedby={ariaDescribedBy(field)} aria-invalid={hasError || undefined} aria-required={field.required || undefined}>
 						<legend class="sr-only">{field.label}</legend>
 						<div class="space-y-2">
-							{#each getOptions(field) as option, i (option.value)}
+							{#each getOptions(field) as option, i (i)}
 								<div class="flex items-center gap-2">
 									<input
 										type="radio"

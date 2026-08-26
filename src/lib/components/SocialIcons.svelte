@@ -62,7 +62,7 @@
 
 {#if socialLinks.length > 0}
 	<div class="flex items-center gap-1">
-		{#each socialLinks as social (social.url)}
+		{#each socialLinks as social, i (i)}
 			{@const Icon = getPlatformIcon(social.platform)}
 			<a
 				href={social.url}
