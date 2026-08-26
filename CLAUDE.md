@@ -66,13 +66,13 @@ Components are reused across pages — e.g. `ShowCard` appears on /shows and /pr
 
 **ScheduleGrid responsive:** Mobile (< 640px) shows horizontal day tabs with single day view (today pre-selected). Desktop (>= 640px) uses the full grid layout.
 
-**Markdown rendering:** `$lib/utils/markdown.ts` exports `renderMarkdown()` — snarkdown for markdown, then DOMPurify (`isomorphic-dompurify`) against an explicit tag/attribute **allowlist**. Used for show descriptions, presenter bios, event descriptions. Never swap this for a blocklist: snarkdown passes raw HTML through and the output is injected with `{@html}`.
+**Markdown rendering:** `$lib/utils/markdown.ts` exports `renderMarkdown()` — snarkdown for markdown, then js-xss (`FilterXSS`) against an explicit tag/attribute **allowlist**. Used for show descriptions, presenter bios, event descriptions. Never swap this for a blocklist: snarkdown passes raw HTML through and the output is injected with `{@html}`.
 
 **FormRenderer CAPTCHA:** `FormRenderer` accepts an optional `captchaSiteKey` prop. When provided, it loads the Cloudflare Turnstile script, renders the widget in the form, and submits through a proxy route (`/api/forms/[slug]/submit`) that validates the token server-side before forwarding to the v1 API.
 
 ## Sanitising user content
 
-`renderMarkdown()` runs snarkdown, then DOMPurify against an explicit tag and
+`renderMarkdown()` runs snarkdown, then js-xss against an explicit tag and
 attribute **allowlist**. Never swap that for a blocklist: snarkdown passes raw
 HTML straight through and the output is injected with `{@html}`. The previous
 regex blocklist let every event-handler attribute through (`<img src=x
